@@ -1,6 +1,6 @@
 # Dice bot for Discord
 # Author: Humblemonk
-# Version: 9.0.2
+# Version: 9.0.4
 # Copyright (c) 2017. All rights reserved.
 # !/usr/bin/ruby
 # If you wish to run a single instance of this bot, please follow the "Manual Install" section of the readme!
@@ -54,7 +54,7 @@ inc_cmd = lambda do |event|
   response_array = []
   begin
     inc_event_roll = event.options.values.join('')
-    rolls_array = inc_event_roll.split(%r{\s*/\s*}).take(4)
+    rolls_array = inc_event_roll.split(/\s*;\s*/).take(4)
     rolls_array.each do |event_roll|
       @do_tally_shuffle = false
       check_comment(event_roll)
@@ -77,6 +77,7 @@ inc_cmd = lambda do |event|
       @reroll_indefinite_check = 0
       @reroll_count = 0
       @botch = 0
+      @dnum = ''
 
       check_roll_modes
       next if @ed && !replace_earthdawn(event)
@@ -101,7 +102,7 @@ inc_cmd = lambda do |event|
       check_universal_modifiers
 
       # Check for dn
-      @dnum = @input.scan(/dn\s?(\d+)/).first.join.to_i if @input.match?(/^(1dn)\d+/i)
+      @dnum = @input.scan(/dn\s?(\d+)/).first.join.to_i if @input.match?(/^\s?(dn)\d+/i)
 
       # Check for correct input
       if @roll.match?(/\dd\d/i)
